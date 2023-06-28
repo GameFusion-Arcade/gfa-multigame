@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MetaMask Connect</title>
+  <style>
+    #connectButton {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <button id="connectButton">Connect Wallet</button>
+
+  <script>
+    // Function to open the popup window
+    function openPopup() {
+      const width = 400;
+      const height = 600;
+      const left = window.innerWidth / 2 - width / 2;
+      const top = window.innerHeight / 2 - height / 2;
+
+      window.open( //to open the popup.html file window
+        'test.html', // Replace with the path to your popup HTML file
+        'MetaMask Connect',
+        `width=${width},height=${height},left=${left},top=${top}`
+      );
+    }
+
+    // Event listener for the connect button
+    const connectButton = document.getElementById('connectButton');
+    connectButton.addEventListener('click', openPopup);
+  </script>
+</body>
+</html>
