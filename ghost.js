@@ -123,20 +123,22 @@ class Ghost {
             parseInt(this.target.x / oneBlockSize),
             parseInt(this.target.y / oneBlockSize)
         );
-        if (typeof this.direction == "undefined") {
+        if (typeof this.direction === "undefined") {
             this.direction = tempDirection;
             return;
         }
+
         if (
-            this.getMapY() != this.getMapYRightSide() &&
-            (this.direction == DIRECTION_LEFT ||
-                this.direction == DIRECTION_RIGHT)
+            this.getMapY() !== this.getMapYRightSide() &&
+            (this.direction === DIRECTION_LEFT ||
+                this.direction === DIRECTION_RIGHT)
         ) {
             this.direction = DIRECTION_UP;
         }
+        
         if (
-            this.getMapX() != this.getMapXRightSide() &&
-            this.direction == DIRECTION_UP
+            this.getMapX() !== this.getMapXRightSide() &&
+            this.direction === DIRECTION_UP
         ) {
             this.direction = DIRECTION_LEFT;
         }
@@ -151,35 +153,73 @@ class Ghost {
     }
 
     calculateNewDirection(map, destX, destY) {
-        let mp = [];
-        for (let i = 0; i < map.length; i++) {
-            mp[i] = map[i].slice();
-        }
-
-        let queue = [
-            {
-                x: this.getMapX(),
-                y: this.getMapY(),
-                rightX: this.getMapXRightSide(),
-                rightY: this.getMapYRightSide(),
-                moves: [],
-            },
-        ];
+        let queue = [];
+        let visited = new Set();
+    
+        queue.push({ x: this.getMapX(), y: this.getMapY(), moves: [] });
+        visited.add(`${this.getMapX()},${this.getMapY()}`);
+    
         while (queue.length > 0) {
-            let poped = queue.shift();
-            if (poped.x == destX && poped.y == destY) {
-                return poped.moves[0];
+            let popped = queue.shift();
+    
+            if (popped.x === destX && popped.y === destY) {
+                return popped.moves[0];
             } else {
-                mp[poped.y][poped.x] = 1;
-                let neighborList = this.addNeighbors(poped, mp);
-                for (let i = 0; i < neighborList.length; i++) {
-                    queue.push(neighborList[i]);
+                let neighbors = this.getNeighbors(map, popped.x, popped.y);
+    
+                for (let neighbor of neighbors) {
+                    let neighborKey = `${neighbor.x},${neighbor.y}`;
+    
+                    if (!visited.has(neighborKey)) {
+                        queue.push({
+                            x: neighbor.x,
+                            y: neighbor.y,
+                            moves: [...popped.moves, neighbor.move]
+                        });
+    
+                        visited.add(neighborKey);
+                    }
                 }
             }
         }
-
-        return 1; // direction
+    
+        return 1; // default direction
     }
+    
+    getNeighbors(map, x, y) {
+        const directions = [
+            { dx: -1, dy: 0, move: DIRECTION_LEFT },
+            { dx: 1, dy: 0, move: DIRECTION_RIGHT },
+            { dx: 0, dy: -1, move: DIRECTION_UP },
+            { dx: 0, dy: 1, move: DIRECTION_BOTTOM }
+        ];
+    
+        let neighbors = [];
+    
+        for (let direction of directions) {
+            let nx = x + direction.dx;
+            let ny = y + direction.dy;
+    
+            if (this.isValidNeighbor(map, nx, ny)) {
+                neighbors.push({ x: nx, y: ny, move: direction.move });
+            }
+        }
+    
+        return neighbors;
+    }
+    
+    isValidNeighbor(map, x, y) {
+        const numRows = map.length;
+        const numColumns = map[0].length;
+    
+        return (
+            x >= 0 &&
+            x < numColumns &&
+            y >= 0 &&
+            y < numRows &&
+            map[y][x] !== 1
+        );
+    }    
 
     addNeighbors(poped, mp) {
         let queue = [];

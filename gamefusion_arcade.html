@@ -1,12 +1,196 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameFusion Arcade</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="./fonts/Arcade Gamer.otf" rel="stylesheet" type="text/css">
+    <link href="./fonts/RobotoMono-VariableFont_wght.ttf" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="./styles.css" />
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+            font-family: 'Roboto Mono', monospace;
+            text-align: center;
+            background-color: #cbcedb;
+        }
+        
+        h1 {
+            margin-top: 70px 7px;
+            font-family: 'Arcade Gamer';
+            font-size: 64px;
+            font-weight: 300;
+            text-align: center;
+        }
+
+        .container {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        h2 .showAccount::before {
+            content:"" attr(data-account);
+            margin-top: 5px;
+            text-align: center;
+            font-family: 'Roboto Mono', monospace;
+            color: #3c4056;
+        }
+        .pacmanButton {
+            background-color: #f0c3a6;
+            border-radius: 100px;
+            box-shadow: rgba(62, 52, 103, .2) 0 -25px 18px -14px inset,rgba(62, 52, 103, .15) 0 1px 2px,rgba(62, 52, 103, .15) 0 2px 4px,rgba(62, 52, 103, .15) 0 4px 8px,rgba(62, 52, 103, .15) 0 8px 16px,rgba(62, 52, 103, .15) 0 16px 32px;
+            color: #3C4056;
+            cursor: pointer;
+            display: inline-block;
+            font-family: 'Roboto Mono', monospace;
+            padding: 7px 20px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 250ms;
+            border: 0;
+            font-size: 16px;
+            user-select: none;
+             -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .pacmanButton:hover {
+            box-shadow: rgba(62, 52, 103,.35) 0 -25px 18px -14px inset,rgba(62, 52, 103,.25) 0 1px 2px,rgba(62, 52, 103,.25) 0 2px 4px,rgba(62, 52, 103,.25) 0 4px 8px,rgba(62, 52, 103,.25) 0 8px 16px,rgba(62, 52, 103,.25) 0 16px 32px;
+            transform: scale(1.05) rotate(-1deg);
+        }
+
+        .pacmanButton::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: -20px; /* Adjust the spacing between text and image */
+            transform: translateY(-50%);
+            width: 40px; /* Adjust the width of the image */
+            height: 40px; /* Adjust the height of the image */
+            background-image: url('pacman_button (1).png');
+            background-size: cover;
+            display: none;
+        }
+
+        .pacmanButton:hover::after {
+            display: block;
+            right: -27px; /* Adjust the spacing between text and image on hover */
+        }
+
+        .tttButton {
+            margin-top: 15px;
+            background-color: #f0c3a6;
+            border-radius: 100px;
+            box-shadow: rgba(62, 52, 103, .2) 0 -25px 18px -14px inset,rgba(62, 52, 103, .15) 0 1px 2px,rgba(62, 52, 103, .15) 0 2px 4px,rgba(62, 52, 103, .15) 0 4px 8px,rgba(62, 52, 103, .15) 0 8px 16px,rgba(62, 52, 103, .15) 0 16px 32px;
+            color: #3C4056;
+            cursor: pointer;
+            display: inline-block;
+            font-family: 'Roboto Mono', monospace;
+            padding: 7px 20px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 250ms;
+            border: 0;
+            font-size: 16px;
+            user-select: none;
+             -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .tttButton:hover {
+            box-shadow: rgba(62, 52, 103,.35) 0 -25px 18px -14px inset,rgba(62, 52, 103,.25) 0 1px 2px,rgba(62, 52, 103,.25) 0 2px 4px,rgba(62, 52, 103,.25) 0 4px 8px,rgba(62, 52, 103,.25) 0 8px 16px,rgba(62, 52, 103,.25) 0 16px 32px;
+            transform: scale(1.05) rotate(-1deg);
+        }
+
+        .tttButton::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: -20px; /* Adjust the spacing between text and image */
+            transform: translateY(-50%);
+            width: 55px; /* Adjust the width of the image */
+            height: 55px; /* Adjust the height of the image */
+            background-image: url('3t.png');
+            background-size: cover;
+            display: none;
+        }
+
+        .tttButton:hover::before {
+            display: block;
+            left: -45px; /* Adjust the spacing between text and image on hover */
+        }
+
+    </style>
 </head>
 <body>
-    <h1>GameFusion Arcade</h1>
-    <p>Select game:</p>
-    <button onclick="window.location.href = 'pacman.html';">Pacman</button>
-    <button onclick="window.location.href = 'tictactoe.html';">Tic Tac Toe</button>
+    <div class="container">
+        <img src="bunny (1).png" alt="Bunny Logo" class="bunny-logo">
+        <h1>GAMEFUSION<br>ARCADE</h1>
+        <h2>Account: <span class="showAccount"></span></h2>
+    </div>
+
+    <p style="color: #3c4056;">Select game</p>
+    <button class="pacmanButton" role="button1">Pacman</button>
+    <button class="tttButton" role="button2">Tic Tac Toe</button>
+
+    <script>
+        //function to handle the button clicks
+        function buttonClicked() {
+
+            // Check if the user has connected their MetaMask account
+            if (window.ethereum && window.ethereum.selectedAddress) {
+                //if the account is set, redirect to the game page
+                if (this.getAttribute("role") === "button1") {
+                    window.location.href = "pacman.html";
+                } else if (this.getAttribute("role") === "button2") {
+                    window.location.href = "tictactoe.html";
+                }
+            } else {
+                // User is not connected, redirect to the connect page underprogress.html
+                window.location.href = "underprogress.html";
+            }
+        }
+
+        //event listeners to the buttons
+        const pacmanButton = document.querySelector(".pacmanButton");
+        pacmanButton.addEventListener("click", buttonClicked);
+
+        const tttButton = document.querySelector(".tttButton");
+        tttButton.addEventListener("click", buttonClicked);
+
+        // Retrieve the account information from MetaMask provider
+        async function getAccount() {
+            try {
+                // Request access to the user's MetaMask accounts
+                await window.ethereum.request({ method: "eth_requestAccounts" });
+
+                // Update the UI with the account information
+                const accounts = await window.ethereum.request({ method: "eth_accounts" });
+                const account = accounts[0];
+
+                if (account) {
+                    document.querySelector(".showAccount").setAttribute("data-account", account);
+                    localStorage.setItem("account", account);
+                }
+            } catch (error) {
+                // Handle the error if the user doesn't grant access to the accounts
+                console.error("Error:", error);
+            }
+        }
+
+        // Call the function to retrieve the account information
+        getAccount();
+    </script>
 </body>
 </html>
+

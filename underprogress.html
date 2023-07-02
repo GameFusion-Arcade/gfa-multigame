@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameFusion Arcade</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="./fonts/Arcade Gamer.otf" rel="stylesheet" type="text/css">
+    <link href="./fonts/RobotoMono-VariableFont_wght.ttf" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="./styles.css" />
+
+    <script type="module" src="underprogress.js"></script>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+            font-family: 'Roboto Mono', monospace;
+            text-align: center;
+            background-color: #cbcedb;
+        }
+        
+        h1 {
+            margin-top: 70px 7px;
+            font-family: 'Arcade Gamer';
+            font-size: 64px;
+            font-weight: 300;
+            text-align: center;
+        }
+
+        .container {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .button {
+            margin: 16px 0;
+            padding: 8px 32px;
+            font-family: 'Roboto Mono', Arial;
+            font-size: 24px;
+            font-weight: 500;
+            box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+        }
+
+        h2
+        {
+            margin-top: 45px;
+            text-align: center;
+            font-family: 'Roboto Mono', monospace;
+            color: #3c4056;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="bunny (1).png" alt="Bunny Logo" class="bunny-logo">
+        <h1>GAMEFUSION<br>ARCADE</h1>
+        <button class="button" id="connectButton">
+            CONNECT WALLET
+          <span id="loading">&bull;&bull;&bull;</span>
+        </button>
+    </div>
+    <h2>Account: <span class="showAccount"></span></h2>
+    <script>
+        const isMetaMaskInstalled = () => {
+                if(typeof window.ethereum !== "undefined" && window.ethereum.isMetaMask) {
+                    return true;
+                    console.log("MetaMask is installed!");
+                }
+                return false;
+            };
+
+            // Function to redirect to MetaMask download page
+            const openMetaMaskDownload = () => {
+                window.open("https://metamask.io/download/", "_blank");
+            };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const connectButton = document.getElementById("connectButton");
+            const loadingSpinner = document.getElementById("loading");
+
+            const startLoading = () => {
+                loadingSpinner.style.display = "inline";
+            };
+
+            const stopLoading = () => {
+                loadingSpinner.style.display = "none";
+            };
+
+            const connectWallet = async () => {
+                startLoading();
+
+                if (isMetaMaskInstalled()) {
+                    try {
+                        const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                        const account = accounts[0];
+
+                        // Update UI with connected wallet information
+                        document.querySelector(".showAccount").innerText = account;
+                        connectButton.innerText = "CONNECTED";
+
+                        // Store the account number in localStorage
+                        localStorage.setItem("account", account);
+
+                        stopLoading();
+
+                        window.location.href = "gamefusion_arcade.html"; //redirect to the current page
+                    } catch (error) {
+                        console.error(error);
+
+                        if (error.code === 4001) {
+                            console.log("Please connect to MetaMask.");
+                        } else {
+                            console.error(error);
+                        }
+
+                        stopLoading();
+                    }
+                } else {
+                    console.log("Please install MetaMask!");
+                    openMetaMaskDownload();
+                    stopLoading();
+                }
+            };
+
+            connectButton.addEventListener("click", connectWallet);
+
+            window.addEventListener("euthereum#chainChanged", () => {
+                window.location.href = window.location.href;
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.3/dist/web3.min.js"></script>
+
+</body> 
+</html>

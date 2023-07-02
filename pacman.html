@@ -9,57 +9,237 @@
 </head>
 <style>
     @font-face {
-        font-family: 'Emulogic';
-        src: url('fonts/emulogic.ttf');
+      font-family: 'Emulogic';
+      src: url('fonts/emulogic.ttf');
     }
-    /* Other CSS styles for your game */
+
+    @font-face {
+      font-family: 'Roboto Mono';
+      src: url('./fonts/RobotoMono-VariableFont_wght.ttf') format('truetype');
+    }
     
-    #connectButton { /*connectWalletButton*/
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      padding: 10px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
+    body {
+      margin: 0;
+      background-color: black;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    #text1 {
+      font-family: 'Emulogic';
+      color: white;
+      font-size: 20px;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #text2 {
+      font-family: 'Emulogic';
+      color: white;
+      font-size: 20px;
+      text-align: center;
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #text3 {
+      font-family: 'Emulogic';
+      color: white;
+      font-size: 20px;
+      text-align: center;
+      position: absolute;
+      top: 70%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #canvas {
+      max-width: 100%;
+      max-height: calc(100% - 50px);
+      margin: auto;
+    }
+
+    #restartButton {
+      display: none;
+      padding: 7px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 18px;
+      font-weight: 500;
+      color: #efc11c;
+      position: absolute;
+      top: calc(60%);
+      left: 46.5%;
+      transform: translatX(-50%);
+      background-color: transparent;
+      border: 5px solid #efc11c;
       cursor: pointer;
     }
+
+    .restartBttn:hover,
+    .restartBttn:focus {
+      animation: restartPulse 1s;
+      box-shadow: 0 0 0 2em transparent;
+    }
+
+    @keyframes restartPulse {
+      0% {
+        box-shadow: 0 0 0 var(--hover);
+      }     
+    }
+
+    :root{
+      --hover: #efc11c;
+    }
+
+    #imageContainer {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      margin-top: 19px;
+    }
+
+    #imageContainer img {
+      width: 27%; /* Ensure the image fills the container */
+      height: auto;
+    }
+
+    #homeButton {
+      display: none;
+      margin-bottom: 10px;
+      padding: 7px; 
+    }
+
+    .homeBttn {
+      appearance: none;
+      background-color: transparent;
+      border: 2px solid #CBCEDB;
+      border-radius: 15px;
+      box-sizing: border-box;
+      color: #CBCEDB;
+      cursor: pointer;
+      display: inline-block;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: normal;
+      margin-top: 100;
+      min-height: 50px;
+      max-width: 320px;
+      outline: none;
+      padding: 6px;
+      text-align: center;
+      text-decoration: none;
+      transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      width: 100%;
+      will-change: transform;
+    }
+
+  .homeBttn:disabled {
+    pointer-events: none;
+  }
+
+  .homeBttn:hover {
+    color: #C1C2D9;
+    background-color: #3C4056;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+  }
+
+  .homeBttn:active {
+    box-shadow: none;
+    transform: translateY(0);
+  }
+    
 </style>
-<body style="margin: 0; background-color: black;">
-    <canvas id="canvas" width="500" height="500"></canvas>
+<body>
+  <div id="imageContainer">
+    <img src="Pac-Man-Logo.png" alt="Image">
+  </div>
+    <canvas id="canvas" width="420" height="500"></canvas>
+    
     <div style="display:none;">
-        <img id="animation" src="animation.gif" width="140" height="20">
-        <img id="ghosts" src="ghost.png" width="140" height="20">
+      <img id="animation" src="animation.gif" width="140" height="20">
+      <img id="ghosts" src="ghost.png" width="140" height="20">
     </div>
+
+    <div id="text1">
+      READY
+    </div>
+
+    <div id="text2">
+      SET
+    </div>
+
+    <div id="text3">
+      GO!
+    </div>
+
+    <button id="restartButton" onclick="restart()" class="restartBttn">RESTART</button>
+    <button id="homeButton" onclick="redirectToHome()" class="homeBttn">HOME</button>
+
+    <script>
+
+      window.onload = function() {
+        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+        createRect(0, 0, canvas.width, canvas.height, "black");
+        drawWalls();
+        drawFoods();
+        drawScore();
+        drawRemainingLives();
+
+          setTimeout(function() {
+          startGame();
+          }, 3500);
+        }
+
+      // Function to hide the flashing text
+      function hideFlashText1() {
+        var text1 = document.getElementById('text1');
+        text1.style.display = 'none';
+
+        var text2 = document.getElementById('text2');
+        text2.style.display = 'block';
+
+        setTimeout(hideFlashText2, 1000);
+    }
+
+      // Function to hide the second flashing text
+      function hideFlashText2() {
+        var flashText2 = document.getElementById('flashText2');
+        text2.style.display = 'none';
+
+        var text3 = document.getElementById('text3');
+        text3.style.display = 'block';
+
+        setTimeout(hideFlashText3, 1000);
+    }
+      function hideFlashText3() {
+        var flashText3 = document.getElementById('flashText3');
+        text3.style.display = 'none';
+      }     
+
+      // Hide the flashing text after 1 second (1000 milliseconds)
+      setTimeout(hideFlashText1, 1000);
+      setTimeout(hideFlashText2, 2000);
+      setTimeout(hideFlashText3, 3000);
+
+    </script>
     <script src="ghost.js"></script>
     <script src="pacman_script.js"></script>
     <script src="game.js"></script>
 
-    <a href="tictactoe.html">Tic Tac Toe</a>
-    <a href="gamefusion_arcade.html">Homepage</a>
-
-    <button id="connectButton">Connect Wallet</button>
-
-  <script>
-    // Function to open the popup window
-    function openPopup() {
-      const width = 400;
-      const height = 600;
-      const left = window.innerWidth / 2 - width / 2;
-      const top = window.innerHeight / 2 - height / 2;
-
-      window.open( //to open the popup.html file window
-        'test.html', // Replace with the path to your popup HTML file
-        'MetaMask Connect',
-        `width=${width},height=${height},left=${left},top=${top}`
-      );
-    }
-
-    // Event listener for the connect button
-    const connectButton = document.getElementById('connectButton');
-    connectButton.addEventListener('click', openPopup);
-  </script>
 </body>
 
 </html>

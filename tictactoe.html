@@ -5,9 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="ttt_style.css">
     <script src="ttt_script.js" defer></script>
-    <title>Document</title>
+    <title>Tic Tac Toe</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="./fonts/Arcade Gamer.otf" rel="stylesheet" type="text/css">
+    <link href="./fonts/RobotoMono-VariableFont_wght.ttf" rel="stylesheet" type="text/css">
+
 </head>
 <body>
+
+    <div class="container">
+        <img src="bunny (2).png" alt="Bunny Logo" class="bunny-logo">
+        <h1>GAMEFUSION ARCADE<br>TIC TAC TOE</h1>
+       </div>
+
    <div class = "board" id="board">
     <div class="cell" data-cell></div>
     <div class="cell" data-cell></div>
@@ -22,8 +34,8 @@
 
    <div class="winning-message" id="winningMessage">
     <div data-winning-message-text></div>
-    <button id="restartButton">Restart</button>
-    <button class="home-button" onclick="window.location.href = 'gamefusion_arcade.html';">Back To Home</button>
+    <button id="restartButton">RESTART</button>
+    <button class="home-button" onclick="window.location.href = 'gamefusion_arcade.html';">HOME</button>
    </div>
 </body>
 </html>
