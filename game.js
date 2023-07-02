@@ -221,7 +221,7 @@ function restart() {
 // Function to handle the button click and redirect
 function redirectToHome() {
     // Replace 'https://example.com' with the URL of the webpage you want to redirect to
-    window.location.href = 'gamefusion_arcade.html';
+    window.location.href = 'index.html';
   }
   
 
